@@ -91,11 +91,54 @@ enum Recurrence {
   WEEKENDS
 }
 
+// ─── Recipes ─────────────────────────────────────────────────────
+
+model Recipe {
+  id            String    @id @default(cuid())
+  title         String
+  cuisine       String?
+  mealType      MealType?
+  servings      Int?
+  cookTime      Int?
+  sourceUrl     String?
+  imageUrl      String?
+  allergens     String?
+  nutritionInfo String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  ingredients Ingredient[]
+  steps       RecipeStep[]
+  meals       Meal[]
+}
+
+model Ingredient {
+  id        String  @id @default(cuid())
+  recipeId  String
+  name      String
+  quantity  String?
+  unit      String?
+  sortOrder Int     @default(0)
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model RecipeStep {
+  id          String @id @default(cuid())
+  recipeId    String
+  stepNumber  Int
+  instruction String
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeId, stepNumber])
+}
+
 // ─── Meals ────────────────────────────────────────────────────────
 
 model MealPlan {
   id        String   @id @default(cuid())
-  weekStart DateTime
+  weekStart DateTime @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -124,9 +167,11 @@ model Meal {
   imageUrl    String?
   recipeUrl   String?
   servings    Int?
+  recipeId    String?
   createdAt   DateTime @default(now())
 
   day           MealDay        @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  recipe        Recipe?        @relation(fields: [recipeId], references: [id], onDelete: SetNull)
   shoppingItems ShoppingItem[]
 
   @@unique([dayId, mealType])
