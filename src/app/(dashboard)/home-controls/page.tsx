@@ -1,11 +1,10 @@
-import { Card } from "@/components/ui/Card";
+import { DeviceGrid } from "@/components/home-controls/DeviceGrid";
 
-export default function Page() {
+export default function HomeControlsPage() {
   return (
-    <div className="p-6">
-      <Card>
-        <p className="text-slate-400">Coming soon in a future phase.</p>
-      </Card>
+    <div className="p-4">
+      <h1 className="text-white font-bold text-lg mb-4">🏠 Smart Home</h1>
+      <DeviceGrid />
     </div>
   );
 }

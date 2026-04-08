@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/Card";
 import { ChoreSummaryWidget } from "@/components/chores/ChoreSummaryWidget";
 import { CalendarWidget } from "@/components/calendar/CalendarWidget";
 import { MealPlanWidget } from "@/components/meals/MealPlanWidget";
+import { HomeControlsWidget } from "@/components/home-controls/HomeControlsWidget";
 
 export default function DashboardPage() {
   return (
@@ -17,11 +18,8 @@ export default function DashboardPage() {
       </Card>
 
       {/* Row 1: Smart home */}
-      <Card className="col-span-1 flex flex-col gap-2">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
-          Smart Home
-        </h2>
-        <p className="text-slate-500 text-sm">Configure Home Assistant in Settings</p>
+      <Card className="col-span-1 flex flex-col">
+        <HomeControlsWidget />
       </Card>
 
       {/* Row 2: Meals widget */}

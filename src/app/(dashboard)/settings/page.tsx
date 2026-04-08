@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/Card";
 import { CalendarSettings } from "@/components/calendar/CalendarSettings";
+import { HomeAssistantSettings } from "@/components/home-controls/HomeAssistantSettings";
 
 export default function SettingsPage() {
   return (
@@ -36,14 +37,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Smart home */}
-      <Card variant="bordered">
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold text-white">Smart Home</h3>
-          <p className="text-sm text-slate-500">
-            Home Assistant settings coming in Phase 6.
-          </p>
-        </div>
-      </Card>
+      <HomeAssistantSettings />
     </div>
   );
 }
