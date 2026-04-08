@@ -1,11 +1,9 @@
-import { Card } from "@/components/ui/Card";
+import { MessageBoard } from "@/components/messages/MessageBoard";
 
-export default function Page() {
+export default function MessagesPage() {
   return (
-    <div className="p-6">
-      <Card>
-        <p className="text-slate-400">Coming soon in a future phase.</p>
-      </Card>
+    <div className="p-4">
+      <MessageBoard />
     </div>
   );
 }

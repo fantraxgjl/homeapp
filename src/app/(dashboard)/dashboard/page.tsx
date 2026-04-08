@@ -3,6 +3,7 @@ import { ChoreSummaryWidget } from "@/components/chores/ChoreSummaryWidget";
 import { CalendarWidget } from "@/components/calendar/CalendarWidget";
 import { MealPlanWidget } from "@/components/meals/MealPlanWidget";
 import { HomeControlsWidget } from "@/components/home-controls/HomeControlsWidget";
+import { MessageBoard } from "@/components/messages/MessageBoard";
 
 export default function DashboardPage() {
   return (
@@ -35,12 +36,9 @@ export default function DashboardPage() {
         <p className="text-slate-500 text-sm">Coming in Phase 6</p>
       </Card>
 
-      {/* Row 3: Messages */}
-      <Card className="col-span-3 flex flex-col gap-2">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
-          Messages
-        </h2>
-        <p className="text-slate-500 text-sm">Message board coming in Phase 6</p>
+      {/* Row 3: Messages strip */}
+      <Card className="col-span-3" style={{ minHeight: "160px" }}>
+        <MessageBoard compact />
       </Card>
     </div>
   );

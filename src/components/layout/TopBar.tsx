@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { format } from "date-fns";
+import { WeatherWidget } from "@/components/weather/WeatherWidget";
 
 interface TopBarProps {
   onLock: () => void;
@@ -33,6 +34,9 @@ export function TopBar({ onLock }: TopBarProps) {
           {format(now, "d MMMM yyyy")}
         </span>
       </div>
+
+      {/* Weather */}
+      <WeatherWidget />
 
       {/* Clock */}
       <div className="text-4xl font-bold text-white tabular-nums tracking-tight">

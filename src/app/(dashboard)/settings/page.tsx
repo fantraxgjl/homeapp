@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { CalendarSettings } from "@/components/calendar/CalendarSettings";
 import { HomeAssistantSettings } from "@/components/home-controls/HomeAssistantSettings";
+import { WeatherSettings } from "@/components/weather/WeatherSettings";
 
 export default function SettingsPage() {
   return (
@@ -38,6 +39,11 @@ export default function SettingsPage() {
 
       {/* Smart home */}
       <HomeAssistantSettings />
+
+      {/* Weather */}
+      <Card variant="bordered">
+        <WeatherSettings />
+      </Card>
     </div>
   );
 }
