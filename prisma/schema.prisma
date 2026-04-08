@@ -1,0 +1,198 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Family Members ───────────────────────────────────────────────
+
+model FamilyMember {
+  id          String   @id @default(cuid())
+  name        String
+  displayName String
+  role        Role     @default(CHILD)
+  color       String   @default("#6366f1")
+  avatarEmoji String   @default("👤")
+  calendarId  String?
+  createdAt   DateTime @default(now())
+
+  chores           ChoreAssignment[]
+  messages         Message[]
+  choreCompletions ChoreCompletion[]
+}
+
+enum Role {
+  ADULT
+  CHILD
+}
+
+// ─── Chores ───────────────────────────────────────────────────────
+
+model Chore {
+  id         String     @id @default(cuid())
+  title      String
+  iconName   String     @default("star")
+  points     Int        @default(1)
+  recurrence Recurrence @default(DAILY)
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+
+  assignments ChoreAssignment[]
+}
+
+model ChoreAssignment {
+  id        String   @id @default(cuid())
+  choreId   String
+  memberId  String
+  dayOfWeek Int?
+  createdAt DateTime @default(now())
+
+  chore  Chore        @relation(fields: [choreId], references: [id], onDelete: Cascade)
+  member FamilyMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([choreId, memberId, dayOfWeek])
+}
+
+model ChoreCompletion {
+  id           String       @id @default(cuid())
+  choreId      String
+  memberId     String
+  completedAt  DateTime     @default(now())
+  pointsEarned Int
+
+  member FamilyMember @relation(fields: [memberId], references: [id])
+
+  @@index([completedAt])
+}
+
+enum Recurrence {
+  DAILY
+  WEEKLY
+  WEEKDAYS
+  WEEKENDS
+}
+
+// ─── Meals ────────────────────────────────────────────────────────
+
+model MealPlan {
+  id        String   @id @default(cuid())
+  weekStart DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  days MealDay[]
+}
+
+model MealDay {
+  id        String   @id @default(cuid())
+  planId    String
+  date      DateTime
+  dayOfWeek Int
+
+  plan  MealPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  meals Meal[]
+
+  @@unique([planId, date])
+}
+
+model Meal {
+  id          String   @id @default(cuid())
+  dayId       String
+  mealType    MealType
+  title       String
+  description String?
+  emoji       String?
+  imageUrl    String?
+  recipeUrl   String?
+  servings    Int?
+  createdAt   DateTime @default(now())
+
+  day           MealDay        @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  shoppingItems ShoppingItem[]
+
+  @@unique([dayId, mealType])
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+// ─── Shopping List ────────────────────────────────────────────────
+
+model ShoppingItem {
+  id        String   @id @default(cuid())
+  name      String
+  category  String?
+  quantity  String?
+  isChecked Boolean  @default(false)
+  mealId    String?
+  addedById String?
+  createdAt DateTime @default(now())
+
+  meal Meal? @relation(fields: [mealId], references: [id], onDelete: SetNull)
+}
+
+// ─── Messages Board ───────────────────────────────────────────────
+
+model Message {
+  id        String       @id @default(cuid())
+  content   String
+  authorId  String
+  color     String?      @default("#fef08a")
+  isPinned  Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  expiresAt DateTime?
+
+  author FamilyMember @relation(fields: [authorId], references: [id])
+}
+
+// ─── Smart Home ───────────────────────────────────────────────────
+
+model HomeDevice {
+  id           String   @id @default(cuid())
+  entityId     String   @unique
+  friendlyName String
+  domain       String
+  isVisible    Boolean  @default(true)
+  displayOrder Int      @default(0)
+  iconOverride String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── App Config ───────────────────────────────────────────────────
+
+model AppConfig {
+  id         String   @id @default("singleton")
+  pinHash    String?
+  haBaseUrl  String?
+  haToken    String?
+  weatherLat Float?
+  weatherLon Float?
+  kioskMode  Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
+}
+
+// ─── Calendar Cache ───────────────────────────────────────────────
+
+model CalendarEventCache {
+  id         String   @id @default(cuid())
+  googleId   String   @unique
+  calendarId String
+  memberId   String?
+  title      String
+  startTime  DateTime
+  endTime    DateTime
+  isAllDay   Boolean  @default(false)
+  color      String?
+  location   String?
+  syncedAt   DateTime @default(now())
+
+  @@index([startTime, endTime])
+}
