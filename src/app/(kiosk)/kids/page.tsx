@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import Link from "next/link";
 import { KidsChoreView } from "@/components/chores/KidsChoreView";
+import { TodayEventsWidget } from "@/components/calendar/TodayEventsWidget";
 
 export default function KidsPage() {
   const now = new Date();
@@ -23,13 +24,26 @@ export default function KidsPage() {
         </div>
       </div>
 
-      {/* Chores section */}
-      <div className="flex-1 flex flex-col gap-4 p-6 overflow-hidden">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2 flex-shrink-0">
-          ✅ <span>Today&apos;s Chores</span>
-        </h2>
-        <div className="flex-1 overflow-hidden">
-          <KidsChoreView />
+      {/* Main content — two columns */}
+      <div className="flex-1 flex gap-6 p-6 overflow-hidden">
+        {/* Left: Chores */}
+        <div className="flex-1 flex flex-col gap-3 overflow-hidden">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2 flex-shrink-0">
+            ✅ <span>Today&apos;s Chores</span>
+          </h2>
+          <div className="flex-1 overflow-auto dashboard-scroll">
+            <KidsChoreView />
+          </div>
+        </div>
+
+        {/* Right: Today's events */}
+        <div className="w-72 flex flex-col gap-3 flex-shrink-0">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            📅 <span>Today</span>
+          </h2>
+          <div className="flex-1 overflow-auto dashboard-scroll">
+            <TodayEventsWidget />
+          </div>
         </div>
       </div>
 

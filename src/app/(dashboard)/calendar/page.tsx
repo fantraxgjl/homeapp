@@ -1,11 +1,10 @@
-import { Card } from "@/components/ui/Card";
+import { CalendarFullView } from "@/components/calendar/CalendarFullView";
 
-export default function Page() {
-  return (
-    <div className="p-6">
-      <Card>
-        <p className="text-slate-400">Coming soon in a future phase.</p>
-      </Card>
-    </div>
-  );
+interface PageProps {
+  searchParams: Promise<{ date?: string }>;
+}
+
+export default async function CalendarPage({ searchParams }: PageProps) {
+  const { date } = await searchParams;
+  return <CalendarFullView initialDate={date} />;
 }

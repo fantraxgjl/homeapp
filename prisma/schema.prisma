@@ -22,6 +22,22 @@ model FamilyMember {
   chores           ChoreAssignment[]
   messages         Message[]
   choreCompletions ChoreCompletion[]
+  calendarFeeds    CalendarFeed[]
+}
+
+// ─── Calendar Feeds ───────────────────────────────────────────────
+
+model CalendarFeed {
+  id        String    @id @default(cuid())
+  name      String
+  icalUrl   String
+  color     String    @default("#6366f1")
+  memberId  String?
+  isActive  Boolean   @default(true)
+  lastSync  DateTime?
+  createdAt DateTime  @default(now())
+
+  member FamilyMember? @relation(fields: [memberId], references: [id], onDelete: SetNull)
 }
 
 enum Role {

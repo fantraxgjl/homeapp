@@ -8,6 +8,9 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
+  // Keep Node.js-specific packages out of the webpack bundle
+  serverExternalPackages: ["node-ical", "better-sqlite3", "@prisma/adapter-better-sqlite3"],
+
   // Ensure service worker has access to all routes
   async headers() {
     return [
