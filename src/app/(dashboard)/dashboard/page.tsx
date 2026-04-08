@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/Card";
+import { ChoreSummaryWidget } from "@/components/chores/ChoreSummaryWidget";
 
 export default function DashboardPage() {
   return (
@@ -12,11 +13,8 @@ export default function DashboardPage() {
       </Card>
 
       {/* Row 1-2: Chore summary */}
-      <Card className="col-span-1 row-span-2 flex flex-col gap-2">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
-          Today&apos;s Chores
-        </h2>
-        <p className="text-slate-500 text-sm">Chore widget coming in Phase 2</p>
+      <Card className="col-span-1 row-span-2 flex flex-col">
+        <ChoreSummaryWidget />
       </Card>
 
       {/* Row 1-2: Smart home */}

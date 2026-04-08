@@ -1,11 +1,5 @@
-import { Card } from "@/components/ui/Card";
+import { ChoreBoard } from "@/components/chores/ChoreBoard";
 
-export default function Page() {
-  return (
-    <div className="p-6">
-      <Card>
-        <p className="text-slate-400">Coming soon in a future phase.</p>
-      </Card>
-    </div>
-  );
+export default function ChoresPage() {
+  return <ChoreBoard />;
 }
