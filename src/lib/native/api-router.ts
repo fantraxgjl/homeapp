@@ -48,8 +48,21 @@ export async function routeNativeRequest(
   try {
     // ── pin ──────────────────────────────────────────────────────────
     if (seg[0] === "pin") {
-      if (seg[1] === "status")  return ok(await config.getConfig());
-      if (seg[1] === "verify")  return ok({ valid: await config.verifyPin(b.pin) });
+      if (seg[1] === "status") {
+        const cfg = await config.getConfig();
+        return ok({ hasPin: cfg.pinSet });
+      }
+      if (seg[1] === "verify") {
+        const cfg = await config.getConfig();
+        if (!cfg.pinSet) {
+          // First setup — save this PIN and unlock
+          await config.setPin(b.pin);
+          return ok({ success: true, firstSetup: true });
+        }
+        const valid = await config.verifyPin(b.pin);
+        if (valid) return ok({ success: true });
+        return ok({ success: false, error: "Incorrect PIN" });
+      }
       if (seg[1] === "update")  { await config.setPin(b.pin); return ok({ success: true }); }
       if (seg[1] === "session") return ok({ success: true }); // no-op; Zustand manages state
     }
