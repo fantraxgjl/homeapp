@@ -19,11 +19,17 @@ cleanup() {
 trap cleanup EXIT
 
 echo "=== homeapp native build ==="
+
+# Generate Prisma client types (needed for TypeScript even though Prisma
+# isn't used at runtime in native mode — the type definitions must exist).
+echo "Generating Prisma types..."
+cd "$APP_DIR"
+npx prisma generate
+
 echo "Moving API routes aside (they're replaced by on-device SQLite)..."
 mv "$API_DIR" "$API_TEMP"
 
 echo "Building static export..."
-cd "$APP_DIR"
 NEXT_BUILD_NATIVE=true npx next build --webpack
 
 echo "Syncing to Capacitor..."
