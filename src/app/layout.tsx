@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { NativeDataProvider } from "@/lib/native/NativeDataProvider";
 
 export const metadata: Metadata = {
   title: "Family Dashboard",
@@ -36,7 +37,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body className="h-full overflow-hidden bg-slate-900 text-white antialiased font-sans">
-        {children}
+        <NativeDataProvider>{children}</NativeDataProvider>
       </body>
     </html>
   );

@@ -33,3 +33,5 @@ export async function POST(
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+// Required for Next.js static export (output: 'export'). Unused at runtime in native mode.
+export async function generateStaticParams() { return []; }

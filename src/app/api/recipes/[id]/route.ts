@@ -95,3 +95,5 @@ export async function DELETE(
   await prisma.recipe.delete({ where: { id } });
   return new NextResponse(null, { status: 204 });
 }
+// Required for Next.js static export (output: 'export'). Unused at runtime in native mode.
+export async function generateStaticParams() { return []; }

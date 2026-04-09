@@ -1,9 +1,5 @@
 import UIKit
 import Capacitor
-import SwiftUI
-
-/// Server URL is persisted in UserDefaults under this key.
-private let kServerURL = "homeapp_server_url"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,47 +10,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-
-        if let serverURL = UserDefaults.standard.string(forKey: kServerURL), !serverURL.isEmpty {
-            // Server URL already configured — launch Capacitor pointing at it.
-            launchCapacitor(serverURL: serverURL, in: window)
-        } else {
-            // First launch — show the setup screen.
-            launchSetupScreen(in: window)
-        }
-
-        window.makeKeyAndVisible()
+        // Capacitor loads the static web bundle from the `out/` directory
+        // (configured as webDir in capacitor.config.ts).
+        // No server URL is required — all data is stored locally via Capacitor SQLite.
         return true
     }
-
-    // MARK: - Private
-
-    private func launchCapacitor(serverURL: String, in window: UIWindow) {
-        // Override the Capacitor server URL at runtime.
-        // This lets us ship one binary that works with any server address.
-        let bridge = CAPBridgeViewController()
-        if let url = URL(string: serverURL) {
-            bridge.setServerBasePath(url.absoluteString)
-        }
-        window.rootViewController = bridge
-    }
-
-    private func launchSetupScreen(in window: UIWindow) {
-        let setupView = ServerSetupView { [weak self] confirmedURL in
-            UserDefaults.standard.set(confirmedURL, forKey: kServerURL)
-            guard let self, let win = self.window else { return }
-            // Transition to the app once the URL is confirmed.
-            UIView.transition(with: win, duration: 0.35, options: .transitionCrossDissolve) {
-                self.launchCapacitor(serverURL: confirmedURL, in: win)
-            }
-        }
-        window.rootViewController = UIHostingController(rootView: setupView)
-    }
-
-    // MARK: - URL handling (deep links)
 
     func application(
         _ app: UIApplication,
