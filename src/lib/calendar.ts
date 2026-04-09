@@ -161,9 +161,12 @@ export async function getCachedEvents(from: Date, to: Date) {
     orderBy: { startTime: "asc" },
   });
 
+  type CachedEvent = (typeof events)[number];
+  type MemberInfo = { id: string; displayName: string; avatarEmoji: string; color: string };
+
   // Enrich with member info
-  const memberIds = [...new Set(events.map((e: { memberId?: string | null }) => e.memberId).filter(Boolean))] as string[];
-  const members =
+  const memberIds = [...new Set(events.map((e: CachedEvent) => e.memberId).filter(Boolean))] as string[];
+  const members: MemberInfo[] =
     memberIds.length > 0
       ? await prisma.familyMember.findMany({
           where: { id: { in: memberIds } },
@@ -171,9 +174,9 @@ export async function getCachedEvents(from: Date, to: Date) {
         })
       : [];
 
-  const memberMap = new Map(members.map((m: { id: string; displayName: string; avatarEmoji: string; color: string }) => [m.id, m]));
+  const memberMap = new Map(members.map((m: MemberInfo) => [m.id, m]));
 
-  return events.map((e) => {
+  return events.map((e: CachedEvent) => {
     const member = e.memberId ? memberMap.get(e.memberId) : undefined;
     return {
       ...e,
