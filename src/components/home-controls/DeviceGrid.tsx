@@ -6,8 +6,12 @@ import { LightControl } from "./LightControl";
 import { ThermostatControl } from "./ThermostatControl";
 import { LockStatusCard } from "./LockStatusCard";
 import { GenericDeviceCard } from "./GenericDeviceCard";
+import { NativeHomeControls } from "./NativeHomeControls";
+import { isNative } from "@/lib/platform";
 
 export function DeviceGrid() {
+  // On native iOS, use the HomeKit plugin instead of Home Assistant
+  if (isNative()) return <NativeHomeControls />;
   useHomeAssistant(); // starts polling
   const { available, states, error } = useHaStore();
 
