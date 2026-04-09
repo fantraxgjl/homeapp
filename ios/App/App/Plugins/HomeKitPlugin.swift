@@ -141,22 +141,10 @@ public class HomeKitPlugin: CAPPlugin, HMHomeManagerDelegate {
         [
             "uniqueIdentifier": accessory.uniqueIdentifier.uuidString,
             "name": accessory.name,
-            "category": categoryString(accessory.category.categoryType),
+            "category": accessory.category.categoryType,
             "roomName": roomName as Any,
             "isReachable": accessory.isReachable,
         ]
-    }
-
-    /// HMAccessory.category.categoryType returns a String constant in HomeKit.
-    private func categoryString(_ type: String) -> String {
-        switch type {
-        case HMAccessoryCategoryTypeLightbulb:   return "lightbulb"
-        case HMAccessoryCategoryTypeSwitch:      return "switch"
-        case HMAccessoryCategoryTypeThermostat:  return "thermostat"
-        case HMAccessoryCategoryTypeDoorLock:    return "lock"
-        case HMAccessoryCategoryTypeSensor:      return "sensor"
-        default:                                 return "other"
-        }
     }
 
     private func lockStateString(_ value: Int) -> String {
