@@ -162,7 +162,7 @@ export async function getCachedEvents(from: Date, to: Date) {
   });
 
   // Enrich with member info
-  const memberIds = [...new Set(events.map((e) => e.memberId).filter(Boolean))] as string[];
+  const memberIds = [...new Set(events.map((e: { memberId?: string | null }) => e.memberId).filter(Boolean))] as string[];
   const members =
     memberIds.length > 0
       ? await prisma.familyMember.findMany({
