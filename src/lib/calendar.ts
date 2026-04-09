@@ -171,7 +171,7 @@ export async function getCachedEvents(from: Date, to: Date) {
         })
       : [];
 
-  const memberMap = new Map(members.map((m) => [m.id, m]));
+  const memberMap = new Map(members.map((m: { id: string; displayName: string; avatarEmoji: string; color: string }) => [m.id, m]));
 
   return events.map((e) => {
     const member = e.memberId ? memberMap.get(e.memberId) : undefined;
